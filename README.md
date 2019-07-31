@@ -13,5 +13,5 @@
   步骤2：app的build.gradle添加依赖关系
  
         dependencies {
-            implementation 'com.github.DizzyYang:OnlyToolbarView:1.6.1'
+            implementation 'com.github.DizzyYang:OnlyToolbarView:1.6.5'
         }

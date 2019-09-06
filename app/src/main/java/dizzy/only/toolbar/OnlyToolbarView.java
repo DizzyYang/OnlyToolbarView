@@ -27,10 +27,10 @@ public class OnlyToolbarView extends Toolbar {
     Context mContext;
     ViewGroup.LayoutParams mWpWpParams;
     ViewGroup.LayoutParams mWpMhParams;
-    LinearLayout only_toolbar_ll;
-    LinearLayout only_negative_ll;
-    LinearLayout only_title_ll;
-    LinearLayout only_positive_ll;
+    LinearLayout onlyToolbarLl;
+    LinearLayout onlyNegativeLl;
+    LinearLayout onlyTitleLl;
+    LinearLayout onlyPositiveLl;
     TextView mTitleText;
     ImageView mTitleImage;
     TextView mSTitleText;
@@ -51,18 +51,23 @@ public class OnlyToolbarView extends Toolbar {
         this.mContext = context;
         this.setContentInsetsAbsolute(0, 0);
         View view = View.inflate(context, R.layout.only_toolbar_view, this);
-        only_toolbar_ll = view.findViewById(R.id.only_toolbar_ll);
-        only_negative_ll = view.findViewById(R.id.only_negative_ll);
-        only_title_ll = view.findViewById(R.id.only_title_ll);
-        only_positive_ll = view.findViewById(R.id.only_positive_ll);
+        onlyToolbarLl = view.findViewById(R.id.only_toolbar_ll);
+        onlyNegativeLl = view.findViewById(R.id.only_negative_ll);
+        onlyTitleLl = view.findViewById(R.id.only_title_ll);
+        onlyPositiveLl = view.findViewById(R.id.only_positive_ll);
+        setBackgroundBorderless(true);
     }
 
-    public void setBackgroundBorderless() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.mRippleState = true;
-            TypedValue typedValue = new TypedValue();
-            mContext.getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, typedValue, true);
-            this.mBackgroundBorderless = typedValue.resourceId;
+    public void setBackgroundBorderless(boolean rippleState) {
+        this.mRippleState = rippleState;
+        if (mRippleState) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                TypedValue typedValue = new TypedValue();
+                mContext.getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, typedValue, true);
+                this.mBackgroundBorderless = typedValue.resourceId;
+            } else {
+                this.mRippleState = false;
+            }
         }
     }
 
@@ -107,10 +112,10 @@ public class OnlyToolbarView extends Toolbar {
         if (mTitleText == null) {
             mTitleText = getTitleText();
             if (mTitleImage != null) {
-                only_title_ll.removeView(mTitleImage);
+                onlyTitleLl.removeView(mTitleImage);
                 mTitleImage = null;
             }
-            only_title_ll.addView(mTitleText, 0);
+            onlyTitleLl.addView(mTitleText, 0);
         }
         mTitleText.setText(string);
         mTitleText.setTextColor(ContextCompat.getColor(mContext, colorId));
@@ -142,10 +147,10 @@ public class OnlyToolbarView extends Toolbar {
         if (mTitleImage == null) {
             mTitleImage = getTitleImage();
             if (mTitleText != null) {
-                only_title_ll.removeView(mTitleText);
+                onlyTitleLl.removeView(mTitleText);
                 mTitleText = null;
             }
-            only_title_ll.addView(mTitleImage, 0);
+            onlyTitleLl.addView(mTitleImage, 0);
         }
         mTitleImage.setImageDrawable(ContextCompat.getDrawable(mContext, drawableId));
         if (onClickListener != null) {
@@ -198,10 +203,10 @@ public class OnlyToolbarView extends Toolbar {
         if (mSTitleText == null) {
             mSTitleText = getSubTitleText();
             if (mSTitleImage != null) {
-                only_title_ll.removeView(mSTitleImage);
+                onlyTitleLl.removeView(mSTitleImage);
                 mSTitleImage = null;
             }
-            only_title_ll.addView(mSTitleText);
+            onlyTitleLl.addView(mSTitleText);
         }
         mSTitleText.setText(string);
         mSTitleText.setTextColor(ContextCompat.getColor(mContext, colorId));
@@ -233,10 +238,10 @@ public class OnlyToolbarView extends Toolbar {
         if (mSTitleImage == null) {
             mSTitleImage = getSubTitleImage();
             if (mSTitleText != null) {
-                only_title_ll.removeView(mSTitleText);
+                onlyTitleLl.removeView(mSTitleText);
                 mSTitleText = null;
             }
-            only_title_ll.addView(mSTitleImage);
+            onlyTitleLl.addView(mSTitleImage);
         }
         mSTitleImage.setImageDrawable(ContextCompat.getDrawable(mContext, drawableId));
         if (onClickListener != null) {
@@ -295,7 +300,7 @@ public class OnlyToolbarView extends Toolbar {
         if (onLongClickListener != null) {
             textView.setOnLongClickListener(onLongClickListener);
         }
-        only_negative_ll.addView(textView);
+        onlyNegativeLl.addView(textView);
         return textView;
     }
 
@@ -323,7 +328,7 @@ public class OnlyToolbarView extends Toolbar {
         if (onLongClickListener != null) {
             imageView.setOnLongClickListener(onLongClickListener);
         }
-        only_negative_ll.addView(imageView);
+        onlyNegativeLl.addView(imageView);
         return imageView;
     }
 
@@ -374,7 +379,7 @@ public class OnlyToolbarView extends Toolbar {
         if (onLongClickListener != null) {
             textView.setOnLongClickListener(onLongClickListener);
         }
-        only_positive_ll.addView(textView, 0);
+        onlyPositiveLl.addView(textView, 0);
         return textView;
     }
 
@@ -402,7 +407,7 @@ public class OnlyToolbarView extends Toolbar {
         if (onLongClickListener != null) {
             imageView.setOnLongClickListener(onLongClickListener);
         }
-        only_positive_ll.addView(imageView, 0);
+        onlyPositiveLl.addView(imageView, 0);
         return imageView;
     }
 
@@ -483,19 +488,19 @@ public class OnlyToolbarView extends Toolbar {
     }
 
     public LinearLayout getToolbarLayout() {
-        return only_toolbar_ll;
+        return onlyToolbarLl;
     }
 
     public LinearLayout getNegativeLayout() {
-        return only_negative_ll;
+        return onlyNegativeLl;
     }
 
     public LinearLayout getTitleLayout() {
-        return only_title_ll;
+        return onlyTitleLl;
     }
 
     public LinearLayout getPositiveLayout() {
-        return only_positive_ll;
+        return onlyPositiveLl;
     }
 
     /************************* Settings *************************/
@@ -503,8 +508,8 @@ public class OnlyToolbarView extends Toolbar {
         if (view == null) {
             return;
         }
-        only_toolbar_ll.removeAllViews();
-        only_toolbar_ll.addView(view);
+        onlyToolbarLl.removeAllViews();
+        onlyToolbarLl.addView(view);
     }
 
     public void removeToolbarView() {
